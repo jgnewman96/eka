@@ -1,0 +1,33 @@
+.periph {
+    height: 100vh;
+}
+
+.sidebar-left {
+    text-align: center;
+    border: 3px solid black;
+    height: 95%;
+    width: 20%;
+    background-color:khaki;
+    box-shadow: 40px 40px;
+  }
+
+.App-Name{
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    font-size: 90px;
+    top: 0px;
+    
+   
+  }
+
+.day-information{
+    position: absolute;
+    border: 10px solid black;
+    height: 80vh;
+    width: 70%;
+    left: 26%;
+    top: 100px;
+    
+   
+  }

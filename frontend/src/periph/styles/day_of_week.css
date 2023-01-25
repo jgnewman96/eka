@@ -1,0 +1,8 @@
+.DayOfWeek {
+    border: 3px solid black;
+    height: 95%;
+    width: 17.5%;
+    margin: 1%;
+    float: left;
+    text-align: center;
+}

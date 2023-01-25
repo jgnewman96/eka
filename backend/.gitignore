@@ -1,0 +1,13 @@
+.mypy_cache
+Pipfile.lock
+__pycache__
+
+# Byte-compiled / optimized / DLL files
+.pytest_cache/
+*.py[cod]
+# PyCharm project
+.idea
+# VSCode project
+.vs_code
+# Mac OS X stuff
+.DS_Store

@@ -1,0 +1,23 @@
+version: "3"
+services:
+  frontend:
+    build: ./frontend
+    command: "yarn start"
+    ports: 
+        - "3000:3000"
+    volumes:
+      - "./frontend:/src/frontend"
+    stdin_open: true
+    environment:
+      - NODE_ENV=development
+  backend-server:
+    build: ./backend
+    command: |
+      python backend/start_server.py
+        --host "0.0.0.0"
+        --port 8100
+    volumes:
+      - './backend:/src/backend'
+      - $HOME/.config/gcloud:/root/.config/gcloud
+    ports:
+      - "8100:8100"

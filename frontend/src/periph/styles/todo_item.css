@@ -1,0 +1,8 @@
+.ToDoItemContainer {
+    border: 3px solid black;
+    height: auto;
+    margin: 1%;
+    text-align: center;
+    box-shadow: 4px 4px;
+    cursor: pointer;
+}
