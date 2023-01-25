@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Card from "./card"
 
 
 
@@ -23,8 +24,8 @@ class CardCanvas extends Component {
     state = {
         zoom_factor: 1,
         animation_active: false,
-        current_x_adjustments: [0, 0, 0, 0],
-        current_y_adjustments: [0, 0, 0, 0]
+        current_x_adjustments: [0, 0, 0, 0, 0],
+        current_y_adjustments: [0, 0, 0, 0, 0]
 
     };
     myRef = React.createRef();
@@ -85,7 +86,7 @@ class CardCanvas extends Component {
 
                 if (y < 0) {
                     size = (y * -1) + 1
-                    console.log(size)
+
                 }
                 else {
                     if (y < 1) {
@@ -93,7 +94,7 @@ class CardCanvas extends Component {
                     }
 
                     else {
-                        console.log(1 / y)
+
                         size = 1 / (y * 10000 + 1)
                     }
                 }
@@ -101,7 +102,7 @@ class CardCanvas extends Component {
 
 
                 var movement = ((this.state.zoom_factor * size) - this.state.zoom_factor) / 30
-                console.log(movement)
+
                 const zoom_factor = this.state.zoom_factor + movement
 
 
@@ -324,6 +325,8 @@ class CardCanvas extends Component {
 
                 id="cardCanvas">
                 Size Factor: { this.state.zoom_factor}
+
+                <Card />
 
 
                 <div style={{
