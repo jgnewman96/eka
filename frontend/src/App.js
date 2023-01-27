@@ -1,11 +1,15 @@
 import Periph from "./periph/periph";
 import Chron from "./chron/chron"
+import TopBar from "./top_bar";
 
 
 function App() {
     return (
         //<Periph />
-        <Chron />
+        <div>
+            <TopBar />
+            <Chron />
+        </div>
     );
 }
 
