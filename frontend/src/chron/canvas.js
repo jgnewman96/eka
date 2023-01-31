@@ -1,11 +1,12 @@
 import React, { Component } from "react"
 import Card from "./card_canvas"
+import { useLocation } from 'react-router-dom';
 
 
 
 const containerStyle = {
     height: "90vh",
-    width: "100%",
+    width: "47.5vw",
     borderStyle: "solid",
     borderColor: "black",
     position: "relative",
@@ -15,6 +16,17 @@ const containerStyle = {
 
 const MAX_ZOOM = 5
 const MIN_ZOOM = 0.1
+
+function CanvasCards () {
+    let location = useLocation();
+
+  React.useEffect(() => {
+    // Google Analytics
+    console.log(location)
+  }, [location]);
+
+    return (<Card />)
+}
 
 
 
@@ -28,6 +40,7 @@ class Canvas extends Component {
 
     };
     myRef = React.createRef();
+
 
     componentDidMount() {
         // IMPORTANT: notice the `passive: false` option
@@ -324,8 +337,9 @@ class Canvas extends Component {
 
                 id="cardCanvas">
                 Size Factor: { this.state.zoom_factor}
+                <CanvasCards />
 
-                <Card />
+                
 
 
                 <div style={{

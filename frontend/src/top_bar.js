@@ -6,7 +6,7 @@ class TopBar extends Component {
 
         return (
             <div className="top_bar" style={{
-                width: "99.6%",
+                width: "98.2vw",
                 height: "40px",
                 borderStyle: "solid",
                 borderColor: "black",

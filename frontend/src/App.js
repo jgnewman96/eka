@@ -1,6 +1,7 @@
 import Periph from "./periph/periph";
 import Chron from "./chron/chron"
 import TopBar from "./top_bar";
+import { Outlet } from "react-router-dom";
 
 
 function App() {
@@ -8,7 +9,9 @@ function App() {
         //<Periph />
         <div>
             <TopBar />
-            <Chron />
+            <div id="detail">
+        <Outlet />
+      </div>
         </div>
     );
 }
