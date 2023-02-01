@@ -13,6 +13,7 @@ export async function chron_loader({ params }) {
     .then(json  => {
 
         const pieces_organized_by_tag = {}
+        const pieces_organized_by_filename = {}
 
         for (let step = 0; step < json.length; step++) {
 
@@ -27,12 +28,14 @@ export async function chron_loader({ params }) {
                 else {
                 pieces_organized_by_tag[tag] = [piece]
                 }
+                pieces_organized_by_filename[piece.filename] = piece
             }
 
             
           }
 
-          return pieces_organized_by_tag
+          return {"by_tag": pieces_organized_by_tag,
+                  "by_piece": pieces_organized_by_filename}
     
     })  
 

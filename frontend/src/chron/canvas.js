@@ -1,6 +1,6 @@
-import React, { Component } from "react"
+import React, { useState, useEffect } from "react"
 import Card from "./card_canvas"
-import { useLocation } from 'react-router-dom';
+import { useLoaderData } from "react-router-dom";
 
 
 
@@ -11,71 +11,132 @@ const containerStyle = {
     borderColor: "black",
     position: "relative",
     overflow: "hidden",
-    display: 'tableCell'
+    display: 'flex', 
+    flexDirection: 'row',
 }
 
 const MAX_ZOOM = 5
 const MIN_ZOOM = 0.1
 
 function CanvasCards () {
-    let location = useLocation();
+ //   let location = useLocation();
 
-  React.useEffect(() => {
+  /*React.useEffect(() => {
     // Google Analytics
-    console.log(location)
-  }, [location]);
+    //console.log(location)
+  }, [location]);*/
 
     return (<Card />)
+}
+
+function Series (props) {
+
+    return (
+        <div style={{width: "100%",
+                     padding: "5%",
+                     margin: "50%",
+                     height: "30%",
+                      position: "relative", 
+                      borderColor: "rgba(54, 255, 145, 0.34)",
+                      borderStyle: "solid",  }}>
+            {props.series_name}
+            
+        </div>
+
+    )
 }
 
 
 
 
-class Canvas extends Component {
-    state = {
+
+
+function Canvas (props) {
+
+   const data = useLoaderData();
+    const series = data['params']['Series']
+    const piece = data['params']['Piece']
+    
+    const tags_to_include = props.metadata["by_piece"][piece].tags
+    if (!tags_to_include.includes(series)) {
+        tags_to_include.push(series)
+    }
+
+
+    
+    /*state = {
         zoom_factor: 1,
         animation_active: false,
         current_x_adjustments: [0, 0, 0, 0, 0],
         current_y_adjustments: [0, 0, 0, 0, 0]
 
-    };
-    myRef = React.createRef();
+    };*/
+    //console.log(metadata.props)
+    const [animationActive, setAnimationActive] = useState(false);
+    const [zoomStatus, setZoomStatus] = useState({'factor': 1, 
+                                                  'current_adjustments': Array(tags_to_include.length).fill({'x':0, 
+                                                                                                            'y': 0})
+                                                  });
 
+    const [startingLocations, setStartingLocations] = useState("foo")
 
-    componentDidMount() {
-        // IMPORTANT: notice the `passive: false` option
-        this.myRef.current.addEventListener('wheel', this.handleWheel, { passive: false });
+    console.log(zoomStatus)
+  
+    const myRef = React.createRef(null);
+   
 
-
-        const cardCanvas = document.getElementById('cardCanvas');
+    function setUp() {
+       
+       
+       
+        const cardCanvas = myRef.current
+        const children = cardCanvas.children
 
         var children_locations = []
 
-        for (const child of cardCanvas.children) {
+        for (const child of children) {
 
             children_locations.push(child.getBoundingClientRect())
 
 
         }
-        this.setState({
-            children_locations: children_locations,
-            box_location: cardCanvas.getBoundingClientRect()
-        })
+
+        setStartingLocations({'children_locations': children_locations,
+                              'container_location': cardCanvas.getBoundingClientRect() })
+
+        myRef.current.addEventListener('wheel', handleWheel, { passive: false });
+
+
+        return () => {
+           // myRef.current.removeEventListener('wheel', handleWheel, { passive: false });
+        }
     }
 
-    componentWillUnmount() {
-        this.myRef.current.removeEventListener('wheel', this.handleWheel, { passive: false });
-    }
+    
+
+    useEffect(setUp , []);
+   
+   
 
 
 
+    function handleWheel(e) {
 
-    handleWheel = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+       
+        
+       e.preventDefault();
+       
+       console.log(startingLocations)
+        if (startingLocations == "foo") {
+            console.log("gotfood")
+            return
+        }
 
+        const cardCanvas = myRef.current
+        const children = cardCanvas.children
+        
+         
 
-        const cardCanvas = document.getElementById('cardCanvas');
         const x = e.deltaX
         const y = e.deltaY
 
@@ -88,11 +149,12 @@ class Canvas extends Component {
 
 
 
-            if (this.state.animation_active) {
+            if (animationActive) {
                 return
             }
             else {
-                this.setState({ animation_active: true })
+                setAnimationActive(true)
+                
 
                 var size = 1
 
@@ -113,22 +175,20 @@ class Canvas extends Component {
 
 
 
-                var movement = ((this.state.zoom_factor * size) - this.state.zoom_factor) / 30
+                var movement = ((zoomStatus['factor'] * size) - zoomStatus['factor']) / 100
 
-                const zoom_factor = this.state.zoom_factor + movement
+                const zoom_factor = zoomStatus['factor'] + movement
 
 
                 if (zoom_factor > MAX_ZOOM) {
-                    this.setState({ animation_active: false })
+                    setAnimationActive(false)
                     return
                 }
 
                 if (zoom_factor < MIN_ZOOM) {
-                    this.setState({ animation_active: false })
+                    setAnimationActive(false)
                     return
                 }
-
-                this.setState({ zoom_factor: zoom_factor })
                 const transform_str = 'scale(' + zoom_factor + ')'
 
 
@@ -144,9 +204,10 @@ class Canvas extends Component {
 
 
                     const location = child.getBoundingClientRect()
+                    
 
-                    const movement_factor_x = (-1 * movement * this.state.children_locations[i].width) / 2
-                    const movement_factor_y = (-1 * movement * this.state.children_locations[i].height) / 2
+                    const movement_factor_x = (-1 * movement *  startingLocations.children_locations[i].width) / 2
+                    const movement_factor_y = (-1 * movement * startingLocations.children_locations[i].height) / 2
 
 
 
@@ -206,7 +267,7 @@ class Canvas extends Component {
                         projected_y: location.y + movement_factor_y,
                         vertical_movement: vertical_movement,
                         adjusted_y: location.y + movement_factor_y + vertical_movement,
-                        relative_y: (location.y + movement_factor_y + vertical_movement) - this.state.box_location.y,
+                        relative_y: (location.y + movement_factor_y + vertical_movement) - startingLocations.container_location.y,
                     })
 
 
@@ -214,7 +275,7 @@ class Canvas extends Component {
                         projected_x: location.x + movement_factor_x,
                         horizontal_movement: horizontal_movement,
                         adjusted_x: location.x + movement_factor_x + horizontal_movement,
-                        relative_x: (location.x + movement_factor_x + horizontal_movement) - this.state.box_location.x,
+                        relative_x: (location.x + movement_factor_x + horizontal_movement) - startingLocations.container_location.x,
                         color: child.style.backgroundColor,
                         current_location: location
                     })
@@ -252,7 +313,7 @@ class Canvas extends Component {
                 if (min_x["value"] < 0) {
 
                     const adj_part_1 = Math.abs(horizontal_movements[min_x["key"]]['horizontal_movement'])
-                    const adj_part_2 = Math.abs((movement * this.state.children_locations[min_x["key"]].width) / 2)
+                    const adj_part_2 = Math.abs((movement * startingLocations.children_locations[min_x["key"]].width) / 2)
 
 
                     horizontal_adjustment = adj_part_1 + adj_part_2
@@ -262,7 +323,7 @@ class Canvas extends Component {
                 if (min_y["value"] < 0) {
 
                     const adj_part_1 = Math.abs(vertical_movements[min_y["key"]]['vertical_movement'])
-                    const adj_part_2 = Math.abs((movement * this.state.children_locations[min_y["key"]].height) / 2)
+                    const adj_part_2 = Math.abs((movement * startingLocations.children_locations[min_y["key"]].height) / 2)
 
                     vertical_adjustment = adj_part_1 + adj_part_2
 
@@ -277,18 +338,17 @@ class Canvas extends Component {
 
 
 
-                var updated_x_adjustments = []
-                var updated_y_adjustments = []
+                var updated_adjustments = []
+                
 
                 for (let i = 0; i < cardCanvas.children.length; i++) {
                     const child = cardCanvas.children[i]
 
 
-                    const new_x_adjustment = this.state.current_x_adjustments[i] + horizontal_movements[i]['horizontal_movement'] + horizontal_adjustment
-                    updated_x_adjustments.push(new_x_adjustment)
-
-                    const new_y_adjustment = this.state.current_y_adjustments[i] + vertical_movements[i]['vertical_movement'] + vertical_adjustment
-                    updated_y_adjustments.push(new_y_adjustment)
+                    const new_x_adjustment = zoomStatus.current_adjustments[i].x + horizontal_movements[i]['horizontal_movement'] + horizontal_adjustment
+                    const new_y_adjustment = zoomStatus.current_adjustments[i].y + vertical_movements[i]['vertical_movement'] + vertical_adjustment
+                   
+                    updated_adjustments.push({'x': new_x_adjustment, "y": new_y_adjustment})
 
 
                     const translate_str = " translate(" + new_x_adjustment + "px, " + new_y_adjustment + "px)"
@@ -304,17 +364,17 @@ class Canvas extends Component {
                         fill: 'forwards',
                     }).onfinish = () => {
 
-                        this.setState({ animation_active: false })
+                        
+
 
 
                     };
                 }
-                this.setState({
-                    current_x_adjustments: updated_x_adjustments,
-                    current_y_adjustments: updated_y_adjustments
-                })
 
+                setAnimationActive(false)
 
+                setZoomStatus({'factor': zoom_factor,
+                                'current_adjustments': updated_adjustments})
 
 
 
@@ -328,68 +388,33 @@ class Canvas extends Component {
 
     }
 
-
-    render() {
         return (
 
-            <div style={containerStyle} ref={this.myRef}
-                onWheel={this.handleWheel}
+            <div style={containerStyle} ref={myRef}
+                onWheel={handleWheel}
 
                 id="cardCanvas">
-                Size Factor: { this.state.zoom_factor}
-                <CanvasCards />
+                Size Factor: { zoomStatus.factor}
+                {startingLocations['container_locations']}
 
-                
+              
 
+              
+      {tags_to_include.map((item, index) => (
+        <div key={index}>
+            <Series series_name={item}/>
 
-                <div style={{
-                    height: "50px",
-                    width: "50px",
-                    backgroundColor: "orange",
-                    position: "relative",
-                    left: "20px",
-                    top: "100px"
-                }}> </div>
+        </div>
+      ))}
+    
 
-
-                <div style={{
-                    height: "200px",
-                    width: "50px",
-                    backgroundColor: "blue",
-                    position: "relative",
-                    top: "350px",
-                    left: "100px"
-                }}>
                 </div>
 
-                <div style={{
-                    height: "200px",
-                    width: "50px",
-                    backgroundColor: "purple",
-                    position: "relative",
-                    top: "50px",
-                    left: "300px"
-
-                }}> </div>
-
-                <div style={{
-                    height: "50px",
-                    width: "900px",
-                    backgroundColor: "green",
-                    position: "relative",
-                    top: "-300px",
-                    left: "300px"
-
-                }}> </div>
 
 
 
-
-
-            </div >
 
         )
     }
-}
 
 export default Canvas;

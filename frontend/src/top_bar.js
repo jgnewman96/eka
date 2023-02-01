@@ -1,9 +1,7 @@
 import React, { Component } from "react"
 
 
-class TopBar extends Component {
-    render() {
-
+function TopBar() {
         return (
             <div className="top_bar" style={{
                 width: "98.2vw",
@@ -17,6 +15,6 @@ class TopBar extends Component {
 
             </div>
         );
-    }
+    
 }
 export default TopBar;
