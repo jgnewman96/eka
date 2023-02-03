@@ -8,7 +8,7 @@ function App() {
   
     return (
         //<Periph />
-        <div>
+        <div >
             <TopBar />
             <div id="detail">
         <Outlet />

@@ -15,6 +15,8 @@ function convert_unix_to_year_month(unix) {
 
 }
 
+const popOutColor= "#EBCBC190"
+
 export async function piece_loader({ params }) {
     return json({ params });
   }
@@ -61,9 +63,10 @@ function SeriesViewer(props) {
         <div className="series_viewer" style={{
             width: "25vw",
              height: "90vh", 
-             borderStyle: 
-             "solid", 
-             borderColor: "black",
+             boxShadow: "1px 1px 5px 5px grey",
+            
+             backgroundColor: popOutColor,
+             zIndex: "1"
         }}
         >
            <h2 style={{textAlign: 'center'}}>{series_name} </h2> 
@@ -99,14 +102,15 @@ function SeriesViewer(props) {
             <div className="card_collection_viewer" style={{
                 height: "90vh",
                 width: "25vw",
-                  borderStyle: "solid", 
-                  borderColor: "black",
+                  boxShadow: "1px 1px 5px 5px grey",
+                  backgroundColor: popOutColor,
+                  zIndex: "1"
             }}>
                 <h2 style={{textAlign: 'center'}}>{piece.title} </h2> 
                 <div style={{display: 'flex', flexDirection: 'row'}}>
            {piece.tags.map((item, index) => (
                  <div key={index} style={{margin: "5px", 
-                                         backgroundColor: "rgba(245, 40, 145, 0.34)",
+                                         backgroundColor: "rgba(11, 57, 84, 0.1)",
                                          padding: "3px",
                                          borderRadius: "30%"}}> 
 

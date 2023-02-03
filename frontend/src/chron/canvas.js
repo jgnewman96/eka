@@ -6,13 +6,12 @@ import { useLoaderData } from "react-router-dom";
 
 const containerStyle = {
     height: "90vh",
-    width: "47.5vw",
-    borderStyle: "solid",
-    borderColor: "black",
+    width: "49vw",
     position: "relative",
     overflow: "hidden",
     display: 'flex', 
     flexDirection: 'row',
+   //backgroundColor: "#E1E9FFB0"
 }
 
 const MAX_ZOOM = 5
@@ -55,12 +54,28 @@ function Canvas (props) {
 
    const data = useLoaderData();
     const series = data['params']['Series']
-    const piece = data['params']['Piece']
+    var tags_to_include = [series]
     
-    const tags_to_include = props.metadata["by_piece"][piece].tags
-    if (!tags_to_include.includes(series)) {
-        tags_to_include.push(series)
-    }
+    const piece = data['params']['Piece']
+
+    if (piece !== "none") {
+
+
+        const piece_tags = props.metadata["by_piece"][piece].tags
+
+        for (let step = 0; step < piece_tags.length; step++) {
+            
+            const tag = piece_tags[step]
+            if (tag !== series) {
+                tags_to_include.push(tag)
+            }
+
+          }
+    
+    
+
+}
+
 
 
     
@@ -394,7 +409,7 @@ function Canvas (props) {
                 onWheel={handleWheel}
 
                 id="cardCanvas">
-                Size Factor: { zoomStatus.factor}
+               
                 {startingLocations['container_locations']}
 
               
