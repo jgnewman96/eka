@@ -1,12 +1,11 @@
-services: 
-- type: web
+services:
+  - type: web
     name: ekatest
     rootDir: frontend
     env: static
     buildCommand: yarn build
     staticPublishPath: ./build
     pullRequestPreviewsEnabled: true # optional
-  
     routes:
       - type: rewrite
         source: /*
