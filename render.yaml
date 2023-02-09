@@ -1,0 +1,13 @@
+services: 
+- type: web
+    name: ekablueprint
+    rootDir: frontend
+    env: static
+    buildCommand: yarn build
+    staticPublishPath: ./build
+    pullRequestPreviewsEnabled: true # optional
+  
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
