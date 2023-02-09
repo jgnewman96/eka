@@ -1,6 +1,6 @@
 services: 
 - type: web
-    name: ekablueprint
+    name: ekatest
     rootDir: frontend
     env: static
     buildCommand: yarn build
