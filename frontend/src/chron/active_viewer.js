@@ -50,6 +50,10 @@ function SeriesViewer(props) {
     const data = useLoaderData();
 
     const series_name = data["params"]['Series']
+    if (series_name === "none") {
+        return 
+    }
+
     const pieces_in_series = props['metadata']['by_tag'][series_name]
 
     pieces_in_series.sort(function(a, b) {
@@ -61,7 +65,7 @@ function SeriesViewer(props) {
   
     return (
         <div className="series_viewer" style={{
-            width: "25vw",
+            width: "100%",
              height: "90vh", 
              boxShadow: "1px 1px 5px 5px grey",
             
@@ -101,7 +105,7 @@ function SeriesViewer(props) {
         return (
             <div className="card_collection_viewer" style={{
                 height: "90vh",
-                width: "25vw",
+                width: "100%",
                   boxShadow: "1px 1px 5px 5px grey",
                   backgroundColor: popOutColor,
                   zIndex: "1"
@@ -135,14 +139,48 @@ function SeriesViewer(props) {
 
 function ActiveViewer() {
     const [metadata] = useOutletContext();
+    const data = useLoaderData();
+    var column_template = "20% 50% 30%"
+
+    const series_name = data["params"]['Series']
+    const piece_file_name = data["params"]['Piece']
+
+        if (piece_file_name === "none" ) {
+            column_template = "40% 1fr"
+        }
+
+        if (series_name === "none") {
+            column_template = "60% 1fr"
+
+        }
+
+        if (piece_file_name === "none" && series_name === "none") {
+            column_template = "1fr"
+
+
+            return (
+                <div style={{
+                    display: "grid",
+                   gridTemplateColumns: "100%",
+                   width: "90%"
+                 
+                }}
+                id="allContainer"> 
+                    <Canvas metadata={metadata} />
+    
+                </div>
+            );
+        }
+
 
 
         return (
             <div style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%"
-            }}> 
+                display: "grid",
+                gridTemplateColumns: column_template,
+                width: "98vw",
+                
+            }} id="allContainer"> 
                 <SeriesViewer metadata={metadata} />
                 <Canvas metadata={metadata} />
                 <CardCollectionViewer metadata={metadata} />

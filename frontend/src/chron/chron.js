@@ -49,11 +49,7 @@ function Chron() {
     const metadata = useLoaderData()
 
         return (
-            <div className="chron" style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%"
-            }}>
+            <div className="chron" >
                  <div id="detail">
                     
         <Outlet context={[metadata]} />

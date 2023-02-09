@@ -1,29 +1,18 @@
-import React, { Component, useEffect, createRef } from "react"
+import React, { useEffect, createRef } from "react"
 
 const CardType = {
     Solo: Symbol("Solo"),
     Collection: Symbol("Collection"),
 }
 
-const placeholderTitle = "Distance on the path"
-const placeholderText = "Does advancing further down the path make it harder to connect with others. Your experience of the day to day becomes quite different from others. Your framework of what live is like becomes different. This can make it harder to connect and understand. "
-
 
 const card_style = {
     border: "3px solid black",
-    height: "20%",
-    width: "30%",
+    height: "80%",
+    width: "100%",
     boxShadow: "2px 2px",
-    margin: "5px",
-    overflow: "hidden"
 }
 
-const title_style = {
-    fontSize: "20px",
-    textAlign: "center",
-    margin: "10px"
-
-}
 
 const text_style = {
     fontSize: "12px",
@@ -33,6 +22,11 @@ const text_style = {
 
 function CardContainer(props) {
     const SizeRef = createRef()
+
+    
+    const title_length = props.title.length
+    //console.log(title_length)
+
     useEffect(() => {
         if (SizeRef.current) {
             const { current } = SizeRef
@@ -41,53 +35,98 @@ function CardContainer(props) {
             const title = children[0]
             const text = children[1]
 
-            title.style.fontSize = (1 / boundingRect.width) * 2000 + "px"
-            text.style.fontSize = (1 / boundingRect.width) * 1500 + "px"
+            //title.style.fontSize = (1 / boundingRect.width) * 2000 + "px"
+            //text.style.fontSize = (1 / boundingRect.width) * 1500 + "px"
 
         }
     }, [SizeRef])
+
+    if (props.blocks.length < 1) { 
+
     return (<div className='Card' style={card_style} ref={SizeRef}>
 
-        <div className='CardTitle' style={title_style}>
+        <div className='CardTitle' style={{  fontSize: "0.7em",
+                                            textAlign: "center",
+                                             marginTop: "1em"}}>
             {props.title}
         </div>
-        <div className='CardText' style={text_style}>
-            {props.text}
-        </div>
     </div>)
+    }
+    else {
+        var total_character_length = 0
+
+        for (let i=0; i<props.blocks.length; i++) {
+
+            total_character_length = total_character_length + props.blocks[i].length
+           
+        }
+
+
+        var block_size =  (90  / props.blocks.length)
+        if (props.blocks.length === 1) {
+            block_size = 40
+
+        }
+        console.log(props)
+
+
+        
+
+        
+        return ( <div className='CardCollection' style={{
+           
+            height: "100%",
+            width: "100%",
+            marginBottom: "1.5em"
+           
+         
+          //  overflow: "hidden"
+        }} >
+            <div style={{textAlign: "center", fontSize: "0.6em", marginBottom: "2%"}}>
+                    {props.title}
+                    </div>
+
+                    {props.blocks.map((item, index) => (
+                         <div key={index}style={{  fontSize: "0.8em",
+                                                   textAlign: "center",
+                                                   position: "relative",
+                                                   top: (index > 0) ? "-1%": "0%",
+                                                   zIndex: props.blocks.length - index,
+                                                    width: "90%",
+                                                    height: (props.blocks.length === 1) ? "3em" : item.length / total_character_length  * 100 + '%' ,
+                                                    borderTop: "3px solid black",
+                                                    borderLeft: "3px solid black",
+                                                    borderRight: "3px solid black",
+                                                    boxShadow: "0px -3px 3px rgba(50, 50, 50, 0.75)",
+                                                    borderBottom: (index === props.blocks.length - 1) ? "3px solid black": ""
+                                                
+
+                                                    
+                                                  
+                                
+                                                  }}>
+                {item}
+
+            </div>
+    
+            ))}
+    </div>)
+    }
 
 }
 
 
 
 
-class Card extends Component {
-    state = {
-        title: placeholderTitle,
-        text: placeholderText
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-    render() {
+function Card (props) {    
+    
 
         return (
-            <CardContainer title={this.state.title} text={this.state.text}>
-
-
+            <CardContainer title={props.title} blocks={props.blocks} >
             </CardContainer>
 
 
         );
-    }
+    
 }
 export default Card;

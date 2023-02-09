@@ -1,49 +1,12 @@
 import React, { useState, useEffect } from "react"
-import Card from "./card_canvas"
 import { useLoaderData } from "react-router-dom";
+import Series from './series_canvas'
 
 
 
-const containerStyle = {
-    height: "90vh",
-    width: "49vw",
-    position: "relative",
-    overflow: "hidden",
-    display: 'flex', 
-    flexDirection: 'row',
-   //backgroundColor: "#E1E9FFB0"
-}
 
 const MAX_ZOOM = 5
 const MIN_ZOOM = 0.1
-
-function CanvasCards () {
- //   let location = useLocation();
-
-  /*React.useEffect(() => {
-    // Google Analytics
-    //console.log(location)
-  }, [location]);*/
-
-    return (<Card />)
-}
-
-function Series (props) {
-
-    return (
-        <div style={{width: "100%",
-                     padding: "5%",
-                     margin: "50%",
-                     height: "30%",
-                      position: "relative", 
-                      borderColor: "rgba(54, 255, 145, 0.34)",
-                      borderStyle: "solid",  }}>
-            {props.series_name}
-            
-        </div>
-
-    )
-}
 
 
 
@@ -53,10 +16,18 @@ function Series (props) {
 function Canvas (props) {
 
    const data = useLoaderData();
-    const series = data['params']['Series']
-    var tags_to_include = [series]
+   const series = data['params']['Series']
+   const piece = data['params']['Piece']
+
+   var tags_to_include = []
+   var columnTemplate = "60% 60%"
+
+  if (series !== "none") {
+
+    tags_to_include.push(series)
+
     
-    const piece = data['params']['Piece']
+   
 
     if (piece !== "none") {
 
@@ -75,18 +46,29 @@ function Canvas (props) {
     
 
 }
+  }
+
+  else {
+
+    if (piece === "none") {
+
+    columnTemplate = "30% 30% 30%"
+
+    tags_to_include = Object.keys(props.metadata["by_tag"])
+
+  }
+  else {
+      tags_to_include = props.metadata["by_piece"][piece].tags
+  }}
+
+    const number_of_tags = tags_to_include.length
+
+    console.log(tags_to_include)
 
 
 
     
-    /*state = {
-        zoom_factor: 1,
-        animation_active: false,
-        current_x_adjustments: [0, 0, 0, 0, 0],
-        current_y_adjustments: [0, 0, 0, 0, 0]
-
-    };*/
-    //console.log(metadata.props)
+    
     const [animationActive, setAnimationActive] = useState(false);
     const [zoomStatus, setZoomStatus] = useState({'factor': 1, 
                                                   'current_adjustments': Array(tags_to_include.length).fill({'x':0, 
@@ -130,6 +112,64 @@ function Canvas (props) {
     
 
     useEffect(setUp , []);
+
+    function handleResetClick (e) {
+        console.log("reset click")
+
+        const cardCanvas = myRef.current
+        const zoom_factor = 1
+        const transform_str = 'scale(' + zoom_factor + ')'
+        var updated_adjustments = []
+
+        for (let i = 0; i < cardCanvas.children.length; i++) {
+            const child = cardCanvas.children[i]
+
+
+            const new_x_adjustment = 0
+            const new_y_adjustment = 0
+           
+            updated_adjustments.push({'x': new_x_adjustment, "y": new_y_adjustment})
+
+
+            const translate_str = " translate(" + new_x_adjustment + "px, " + new_y_adjustment + "px)"
+
+
+            child.animate(
+                [
+                    { transform: translate_str + transform_str },
+
+                ], {
+                duration: 1000,
+                iterations: 1,
+                fill: 'forwards',
+            }).onfinish = () => {
+                cardCanvas.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                  })
+
+                
+
+
+
+            }
+        }
+
+        setAnimationActive(false)
+       
+
+        setZoomStatus({'factor': zoom_factor,
+                        'current_adjustments': updated_adjustments})
+
+
+
+
+
+    }
+
+
+
    
    
 
@@ -140,10 +180,7 @@ function Canvas (props) {
        
         
        e.preventDefault();
-       
-       console.log(startingLocations)
         if (startingLocations == "foo") {
-            console.log("gotfood")
             return
         }
 
@@ -404,25 +441,66 @@ function Canvas (props) {
     }
 
         return (
+            <div>
 
-            <div style={containerStyle} ref={myRef}
+            <div style={{
+                            height: "90vh",
+                            width: "100%",
+                            position: "relative",
+                            overflow: "hidden",
+                            display: 'grid', 
+                            gridTemplateColumns: columnTemplate,
+                            columnGap: "8em",
+                            rowGap: "1em",
+                            alignItems: "center",
+                       
+                            
+                        }} 
+                ref={myRef}
                 onWheel={handleWheel}
 
                 id="cardCanvas">
                
-                {startingLocations['container_locations']}
+                
 
               
 
               
       {tags_to_include.map((item, index) => (
         <div key={index}>
-            <Series series_name={item}/>
+            <Series series_name={item} 
+                    series_info={props.metadata['by_tag'][item]}/>
 
         </div>
       ))}
+
+      
     
 
+                </div>
+
+                <div style={{backgroundColor: 'lightgray',
+                            top: "-10em",
+                            left: "40%",
+                             height: "2.8em",
+                             width: "5em",
+                             position: "relative",
+                             textAlign: "center",
+                             borderRadius: "8px",
+                             boxShadow: "5px 5px 5px black",
+                             zIndex: "2000"
+                             
+                             
+                             
+                }}> 
+                {Math.round(zoomStatus.factor * 100) + "%"}
+                <div  style={{backgroundColor: "rgba(39, 54, 245, 0.41)", 
+                             boxShadow: "1px 1px 5px black",
+                              borderRadius: "10px ",
+                              }} 
+                        onClick={handleResetClick}> Reset</div>
+                
+                </div>
                 </div>
 
 
