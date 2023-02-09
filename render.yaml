@@ -2,6 +2,7 @@ services:
   - type: web
     name: ekatest
     rootDir: frontend
+    plan: free
     env: static
     buildCommand: yarn build
     staticPublishPath: ./build
