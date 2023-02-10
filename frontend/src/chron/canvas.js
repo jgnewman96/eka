@@ -52,7 +52,7 @@ function Canvas (props) {
 
     if (piece === "none") {
 
-    columnTemplate = "30% 30% 30%"
+    columnTemplate = "30% 30% 30% 30%"
 
     tags_to_include = Object.keys(props.metadata["by_tag"])
 
