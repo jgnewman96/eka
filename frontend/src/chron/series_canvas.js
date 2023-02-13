@@ -4,13 +4,36 @@ import { useLocation } from 'react-router-dom';
 
 // I need to order the grid blocks so that once of similar size are in the same row
 
+
 function Series (props) {
     var pieces = props.series_info
     var location = useLocation().pathname.split('/')
     const piece = location[location.length - 1]
-    console.log(piece)
 
     pieces.sort((a, b) => (a.blocks.length > b.blocks.length) ? 1 : -1)
+
+    var pieces_to_display = []
+
+    for (let i = 0; i < pieces.length; i++) {
+        const piece = pieces[i]
+        if (piece.status === 'Finished') {
+            if (props.showFinished === true) {
+                pieces_to_display.push(piece)
+            }
+        }
+        if (piece.status === 'In Progress') {
+            if (props.showInProgress) {
+                pieces_to_display.push(piece)
+            }
+        }
+
+        if (piece.status === 'Abandoned') {
+            if (props.showAbandoned) {
+                pieces_to_display.push(piece)
+            }
+        }
+
+    }
 
 
     return (
@@ -45,9 +68,12 @@ function Series (props) {
             </div>
 
 
-            {pieces.map((item, index) => (
+            {pieces_to_display.map((item, index) => (
         <div key={index}>
-            <Card title = {item.title} blocks = {item.blocks} />
+           
+            <Card title = {item.title} blocks = {item.blocks} status = {item.status} />
+                                        
+            
 
         </div>
       ))}

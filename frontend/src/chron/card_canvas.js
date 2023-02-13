@@ -7,10 +7,7 @@ const CardType = {
 
 
 const card_style = {
-    border: "3px solid black",
-    height: "80%",
-    width: "100%",
-    boxShadow: "2px 2px",
+   
 }
 
 
@@ -23,9 +20,23 @@ const text_style = {
 function CardContainer(props) {
     const SizeRef = createRef()
 
+    var color = '#A3E291'
+    var opacity = 1
+    if (props.status == 'In Progress')
+    {
+        color = '#E9F49D'
+
+    }
+
+    if (props.status == 'Abandoned')
+    {
+        opacity = 0.15
+        color = '#F0C9F7'
+
+    }
+
     
     const title_length = props.title.length
-    //console.log(title_length)
 
     useEffect(() => {
         if (SizeRef.current) {
@@ -43,11 +54,17 @@ function CardContainer(props) {
 
     if (props.blocks.length < 1) { 
 
-    return (<div className='Card' style={card_style} ref={SizeRef}>
+    return (<div className='Card' style={{border: "3px solid black",
+                                            height: "80%",
+                                            width: "100%",
+                                            boxShadow: "2px 2px", 
+                                            backgroundColor: color,
+                                            opacity: opacity}} ref={SizeRef}>
 
         <div className='CardTitle' style={{  fontSize: "0.7em",
                                             textAlign: "center",
-                                             marginTop: "1em"}}>
+                                             marginTop: "1em", 
+                                             }}>
             {props.title}
         </div>
     </div>)
@@ -67,17 +84,15 @@ function CardContainer(props) {
             block_size = 40
 
         }
-        console.log(props)
 
-
-        
 
         
         return ( <div className='CardCollection' style={{
            
             height: "100%",
             width: "100%",
-            marginBottom: "1.5em"
+            marginBottom: "1.5em",
+          
            
          
           //  overflow: "hidden"
@@ -98,12 +113,10 @@ function CardContainer(props) {
                                                     borderLeft: "3px solid black",
                                                     borderRight: "3px solid black",
                                                     boxShadow: "0px -3px 3px rgba(50, 50, 50, 0.75)",
-                                                    borderBottom: (index === props.blocks.length - 1) ? "3px solid black": ""
+                                                    borderBottom: (index === props.blocks.length - 1) ? "3px solid black": "",
+                                                    backgroundColor: color,
+                                                    opacity: opacity
                                                 
-
-                                                    
-                                                  
-                                
                                                   }}>
                 {item}
 
@@ -122,7 +135,7 @@ function Card (props) {
     
 
         return (
-            <CardContainer title={props.title} blocks={props.blocks} >
+            <CardContainer title={props.title} blocks={props.blocks} status={props.status} >
             </CardContainer>
 
 

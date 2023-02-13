@@ -3,6 +3,7 @@ import { json, useLoaderData } from "react-router-dom";
 import Canvas from "./canvas"
 import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { RiCloseCircleFill } from "react-icons/ri";
 
 
 
@@ -50,15 +51,39 @@ function SeriesViewer(props) {
     const data = useLoaderData();
 
     const series_name = data["params"]['Series']
+    const piece_file_name = data["params"]['Piece']
     if (series_name === "none") {
         return 
     }
 
-    const pieces_in_series = props['metadata']['by_tag'][series_name]
+    const pieces = props['metadata']['by_tag'][series_name]
 
-    pieces_in_series.sort(function(a, b) {
+    pieces.sort(function(a, b) {
         return a.created - b.created;
       });
+
+      var pieces_to_display = []
+
+    for (let i = 0; i < pieces.length; i++) {
+        const piece = pieces[i]
+        if (piece.status === 'Finished') {
+            if (props.showFinished === true) {
+                pieces_to_display.push(piece)
+            }
+        }
+        if (piece.status === 'In Progress') {
+            if (props.showInProgress) {
+                pieces_to_display.push(piece)
+            }
+        }
+
+        if (piece.status === 'Abandoned') {
+            if (props.showAbandoned) {
+                pieces_to_display.push(piece)
+            }
+        }
+
+    }
 
 
     
@@ -68,16 +93,23 @@ function SeriesViewer(props) {
             width: "100%",
              height: "90vh", 
              boxShadow: "1px 1px 5px 5px grey",
-            
+             position: 'relative',      
              backgroundColor: popOutColor,
              zIndex: "1"
         }}
+        
         >
+            <Link to={"../../../../series/none/piece/" + piece_file_name}  relative="path">
+    <RiCloseCircleFill color="#802080" style={{fontSize: "3em", 
+                               position: 'absolute',
+                               right: "-20",
+                               top: "-20", 
+            }} > </RiCloseCircleFill> </Link>
            <h2 style={{textAlign: 'center'}}>{series_name} </h2> 
            <hr></hr>
            <h3> List of Pieces </h3>
            <ul>
-        {pieces_in_series.map(object => (
+        {pieces_to_display.map(object => (
           <PieceDisplay key={object.filename}
                         filename={object.filename}
                         title={object.title} 
@@ -85,6 +117,7 @@ function SeriesViewer(props) {
                         modified = {object.modified} />
         ))}
       </ul>
+      
             </div>
     );
   }
@@ -108,7 +141,8 @@ function SeriesViewer(props) {
                 width: "100%",
                   boxShadow: "1px 1px 5px 5px grey",
                   backgroundColor: popOutColor,
-                  zIndex: "1"
+                  zIndex: "1",
+                  position: "relative"
             }}>
                 <h2 style={{textAlign: 'center'}}>{piece.title} </h2> 
                 <div style={{display: 'flex', flexDirection: 'row'}}>
@@ -129,6 +163,15 @@ function SeriesViewer(props) {
       
     </div>
     <hr></hr>
+    <Link to={"../none"}  relative="path">
+                          
+                          
+   
+    <RiCloseCircleFill color="#802080" style={{fontSize: "3em", 
+                               position: 'absolute',
+                               right: "-20",
+                               top: "-20", 
+            }} > </RiCloseCircleFill> </Link>
                
 
             </div>
@@ -138,7 +181,7 @@ function SeriesViewer(props) {
 
 
 function ActiveViewer() {
-    const [metadata] = useOutletContext();
+    const [metadata, showFinished, showInProgress, showAbandoned] = useOutletContext();
     const data = useLoaderData();
     var column_template = "20% 50% 30%"
 
@@ -162,11 +205,11 @@ function ActiveViewer() {
                 <div style={{
                     display: "grid",
                    gridTemplateColumns: "100%",
-                   width: "90%"
+                   width: "99vw"
                  
                 }}
                 id="allContainer"> 
-                    <Canvas metadata={metadata} />
+                    <Canvas metadata={metadata} showFinished={showFinished} showInProgress={showInProgress} showAbandoned={showAbandoned} />
     
                 </div>
             );
@@ -181,8 +224,8 @@ function ActiveViewer() {
                 width: "98vw",
                 
             }} id="allContainer"> 
-                <SeriesViewer metadata={metadata} />
-                <Canvas metadata={metadata} />
+                <SeriesViewer metadata={metadata} showFinished={showFinished} showInProgress={showInProgress} showAbandoned={showAbandoned} />
+                <Canvas metadata={metadata} showFinished={showFinished} showInProgress={showInProgress} showAbandoned={showAbandoned} />
                 <CardCollectionViewer metadata={metadata} />
 
             </div>

@@ -63,11 +63,6 @@ function Canvas (props) {
 
     const number_of_tags = tags_to_include.length
 
-    console.log(tags_to_include)
-
-
-
-    
     
     const [animationActive, setAnimationActive] = useState(false);
     const [zoomStatus, setZoomStatus] = useState({'factor': 1, 
@@ -76,8 +71,6 @@ function Canvas (props) {
                                                   });
 
     const [startingLocations, setStartingLocations] = useState("foo")
-
-    console.log(zoomStatus)
   
     const myRef = React.createRef(null);
    
@@ -114,7 +107,6 @@ function Canvas (props) {
     useEffect(setUp , []);
 
     function handleResetClick (e) {
-        console.log("reset click")
 
         const cardCanvas = myRef.current
         const zoom_factor = 1
@@ -469,7 +461,10 @@ function Canvas (props) {
       {tags_to_include.map((item, index) => (
         <div key={index}>
             <Series series_name={item} 
-                    series_info={props.metadata['by_tag'][item]}/>
+                    series_info={props.metadata['by_tag'][item]}
+                    showFinished={props.showFinished}
+                    showInProgress={props.showInProgress}
+                    showAbandoned={props.showAbandoned}/>
 
         </div>
       ))}

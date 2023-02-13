@@ -1,6 +1,7 @@
-import React, { Component } from "react"
+import React, { Component, useState } from "react"
 import { Outlet } from "react-router-dom";
 import { json, useLoaderData } from "react-router-dom";
+import StatusSelector from "./status_selector";
 
 
 export async function chron_loader({ params }) {
@@ -47,12 +48,45 @@ export async function chron_loader({ params }) {
 
 function Chron() {
     const metadata = useLoaderData()
+    const [showFinished, updateShowFinished] = useState(true)
+    const [showInProgress, updateShowInProgress] = useState(true)
+    const [showAbandoned, updateShowAbandoned] = useState(false)
+
+
+    console.log(showFinished)
+
+    function handleShowFinished(e) {
+        updateShowFinished(e.target.checked)
+
+    }
+
+    function handleShowInProgress(e) {
+        updateShowInProgress(e.target.checked)
+
+    }
+    function handleShowAbandoned(e) {
+        updateShowAbandoned(e.target.checked)
+
+    }
 
         return (
-            <div className="chron" >
+            <div className="chron" style={{position: 'relative'}} >
+
+           <StatusSelector 
+                showFinished={showFinished}
+                handleShowFinished={handleShowFinished}
+                showInProgress={showInProgress}
+                handleShowInProgress={handleShowInProgress}
+                showAbandoned={showAbandoned}
+                handleShowAbandoned={handleShowAbandoned}
+                
+           
+           ></StatusSelector>
                  <div id="detail">
+
+        
                     
-        <Outlet context={[metadata]} />
+        <Outlet context={[metadata, showFinished, showInProgress, showAbandoned]} />
       </div>
             </div>
         );

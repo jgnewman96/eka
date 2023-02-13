@@ -45,9 +45,9 @@ def make_filename_from_title(title):
     return title
 
 def get_status_from_tags(tags):
-    if "weeded" in tags:
+    if "abandoned" in tags:
         return "Abandoned"
-    if "rooted" in tags:
+    if "finished" in tags:
         return "Finished"
     else:
         return "In Progress"
@@ -87,8 +87,8 @@ def main(arguments: Optional[Sequence[Text]]) -> Optional[int]:
 
     tags_to_remove = ['literature',
                'correspondence',
-              'rooted', 
-              'weeded', 
+              'finished', 
+              'abandoned', 
               'workouts',
               "",
               'applications'
