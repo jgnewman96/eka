@@ -106,7 +106,7 @@ function CardContainer(props) {
                                                    textAlign: "center",
                                                    position: "relative",
                                                    top: (index > 0) ? "-1%": "0%",
-                                                   zIndex: props.blocks.length - index,
+                                                   zIndex: props.blocks.length + index,
                                                     width: "90%",
                                                     height: (props.blocks.length === 1) ? "3em" : item.length / total_character_length  * 100 + '%' ,
                                                     borderTop: "3px solid black",

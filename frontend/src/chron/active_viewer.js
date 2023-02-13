@@ -1,9 +1,10 @@
-import React, { Component } from "react"
+import React from "react"
 import { json, useLoaderData } from "react-router-dom";
 import Canvas from "./canvas"
 import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { RiCloseCircleFill } from "react-icons/ri";
+import BlockTexts from "./block_texts";
 
 
 
@@ -133,6 +134,7 @@ function SeriesViewer(props) {
 
 
         const piece = props['metadata']['by_piece'][piece_file_name]
+        
 
 
         return (
@@ -142,9 +144,31 @@ function SeriesViewer(props) {
                   boxShadow: "1px 1px 5px 5px grey",
                   backgroundColor: popOutColor,
                   zIndex: "1",
-                  position: "relative"
+                  position: "relative",
             }}>
                 <h2 style={{textAlign: 'center'}}>{piece.title} </h2> 
+                <div style={{display: 'grid',
+                             position: 'absolute',
+                             top: 20,
+                             right: -110}}>
+                    <span style={{textAlign: 'center',  width: '7.5em'}}>Contents</span>
+                    {piece.blocks.map((item, index) => (
+
+                        <div key={index} style={{margin: "2px", 
+                                        padding: "2px",
+                                        width: '10em', 
+                                        backgroundColor: '#afb3b0',
+                                        fontSize: '0.7em',
+                                        textAlign: 'center',
+                                        boxShadow: "5px 5px black"}}>
+                            {item}
+
+                        </div>
+
+                    ))}
+
+
+                </div>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
            {piece.tags.map((item, index) => (
                  <div key={index} style={{margin: "5px", 
@@ -172,6 +196,9 @@ function SeriesViewer(props) {
                                right: "-20",
                                top: "-20", 
             }} > </RiCloseCircleFill> </Link>
+
+
+            <BlockTexts blocks_text={piece.blocks_text} blocks = {piece.blocks} />
                
 
             </div>
@@ -183,7 +210,7 @@ function SeriesViewer(props) {
 function ActiveViewer() {
     const [metadata, showFinished, showInProgress, showAbandoned] = useOutletContext();
     const data = useLoaderData();
-    var column_template = "20% 50% 30%"
+    var column_template = "20% 45% 30%"
 
     const series_name = data["params"]['Series']
     const piece_file_name = data["params"]['Piece']

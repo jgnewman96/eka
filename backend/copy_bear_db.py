@@ -6,6 +6,7 @@ import argparse
 import datetime
 import logging
 import pathlib
+import re
 import shutil
 import sqlite3
 import sys
@@ -38,6 +39,15 @@ def get_block_titles_from_text(text):
                 block_titles.append(title)
                 break
     return block_titles
+
+def get_block_text(text):
+    blocks = text.split('****')
+    block_texts = []
+    for block in blocks[1:]:
+        lines = re.findall(r'^(?!##).*', block, flags=re.MULTILINE) # use regex to find all lines that don't start with '##'[1]
+        result = '\n'.join(lines)
+        block_texts.append(result)
+    return block_texts
 
 def make_filename_from_title(title):
     title = title.lower()
@@ -106,10 +116,13 @@ def main(arguments: Optional[Sequence[Text]]) -> Optional[int]:
 
 
     notes['blocks'] = notes['text'].apply(get_block_titles_from_text)
+    notes['blocks_text'] = notes['text'].apply(get_block_text)
 
     notes["filename"] = notes['title'].apply(make_filename_from_title)  
 
-    notes[['created', 'modified', 'title', 'status', 'tags', 'blocks', 'filename']].to_json("../frontend/public/metadata.json", orient='records')  
+    notes[['created', 'modified', 'title', 
+           'status', 'tags', 'blocks', 
+           'blocks_text', 'filename']].to_json("../frontend/public/metadata.json", orient='records')  
 
     
     return 0

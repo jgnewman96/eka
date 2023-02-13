@@ -5,7 +5,7 @@ function StatusSelector (props) {
        <div style={{position: "absolute", 
                     display: "grid", 
                     gridTemplateColumns: "auto auto auto",
-                    top: -40,
+                    top: -60,
                     right: 40}}>
 
            <div style={{margin: "0.5em",
