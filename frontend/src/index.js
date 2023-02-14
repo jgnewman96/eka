@@ -6,19 +6,14 @@ import {
     createBrowserRouter,
     RouterProvider,
   } from "react-router-dom";
-  import Periph from "./periph/periph";
-import Chron, {chron_loader} from "./chron/chron"
+import  {chron_loader} from "./chron/chron"
 import ActiveViewer, {piece_loader} from "./chron/active_viewer"
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: <App />,
-      children: [
-        {
-          path: "/chron",
-          element: <Chron/>,
-          loader: chron_loader,
+      loader: chron_loader,   
           children: [
               {
                   path: "series/:Series/piece/:Piece",
@@ -27,11 +22,6 @@ import ActiveViewer, {piece_loader} from "./chron/active_viewer"
               },
           ]
         },
-        {path: "periph",
-         element: <Periph/>
-        }
-      ],
-    },
   ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -16,8 +16,24 @@ const MIN_ZOOM = 0.1
 function Canvas (props) {
 
    const data = useLoaderData();
-   const series = data['params']['Series']
-   const piece = data['params']['Piece']
+
+   var series = ''
+   var piece = ''
+   var metadata = {}
+   
+   if (!('params' in data)) {
+       series = 'none'
+       piece = 'none'
+       metadata = data
+   }
+   else {
+   series = data['params']['Series']
+   piece = data['params']['Piece']
+   metadata = props.metadata
+   
+   }
+   console.log(metadata)
+   
 
    var tags_to_include = []
    var columnTemplate = "60% 60%"
@@ -32,7 +48,7 @@ function Canvas (props) {
     if (piece !== "none") {
 
 
-        const piece_tags = props.metadata["by_piece"][piece].tags
+        const piece_tags = metadata["by_piece"][piece].tags
 
         for (let step = 0; step < piece_tags.length; step++) {
             
@@ -54,11 +70,11 @@ function Canvas (props) {
 
     columnTemplate = "30% 30% 30% 30%"
 
-    tags_to_include = Object.keys(props.metadata["by_tag"])
+    tags_to_include = Object.keys(metadata["by_tag"])
 
   }
   else {
-      tags_to_include = props.metadata["by_piece"][piece].tags
+      tags_to_include = metadata["by_piece"][piece].tags
   }}
 
     const number_of_tags = tags_to_include.length
@@ -461,7 +477,7 @@ function Canvas (props) {
       {tags_to_include.map((item, index) => (
         <div key={index}>
             <Series series_name={item} 
-                    series_info={props.metadata['by_tag'][item]}
+                    series_info={metadata['by_tag'][item]}
                     showFinished={props.showFinished}
                     showInProgress={props.showInProgress}
                     showAbandoned={props.showAbandoned}/>

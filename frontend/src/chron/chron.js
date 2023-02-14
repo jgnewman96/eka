@@ -1,7 +1,9 @@
 import React, { Component, useState } from "react"
 import { Outlet } from "react-router-dom";
 import { json, useLoaderData } from "react-router-dom";
+import Canvas from "./canvas";
 import StatusSelector from "./status_selector";
+import { useLocation } from 'react-router-dom';
 
 
 export async function chron_loader({ params }) {
@@ -40,6 +42,41 @@ export async function chron_loader({ params }) {
     
     })  
 
+  }
+
+  function HiddenCanvas (props) {
+
+    var location = useLocation().pathname.split('/')
+    if (location.length < 3) {
+    return (
+        <div>
+        <div style = {{ position: 'absolute', 
+                        width: "40vw", 
+                        height: "70vh",
+                         backgroundColor: 'black',
+                         top: "10vh",
+                         opacity: 1,
+                         zIndex: 100,
+                         left: '30vw' }}></div> 
+
+    <div style={{
+        display: "grid",
+       gridTemplateColumns: "100%",
+       width: "99vw",
+       opacity: 0.2
+     
+    }}
+    id="allContainer"> 
+      
+        <Canvas metadata={props.metadata} showFinished={props.showFinished} showInProgress={props.showInProgress} showAbandoned={props.showAbandoned} />
+
+    </div>
+    </div>
+    )
+}
+else {
+    return 
+}
   }
 
 
@@ -83,6 +120,8 @@ function Chron() {
            
            ></StatusSelector>
                  <div id="detail">
+
+        <HiddenCanvas  showFinished={showFinished}  showInProgress={showInProgress}  showAbandoned={showAbandoned}   />
 
         
                     
