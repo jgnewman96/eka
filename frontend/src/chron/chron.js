@@ -47,6 +47,7 @@ export async function chron_loader({ params }) {
   function HiddenCanvas (props) {
 
     var location = useLocation().pathname.split('/')
+    console.log(location)
     if (location.length < 3) {
     return (
         <div>
