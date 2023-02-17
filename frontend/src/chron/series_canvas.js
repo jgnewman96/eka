@@ -8,7 +8,9 @@ import { useLocation } from 'react-router-dom';
 function Series (props) {
     var pieces = props.series_info
     var location = useLocation().pathname.split('/')
-    const piece = location[location.length - 1]
+    const piece = location[location.length - 3]
+
+    const series_name = props.series_name.split('_').join(" ")
 
     pieces.sort((a, b) => (a.blocks.length > b.blocks.length) ? 1 : -1)
 
@@ -49,7 +51,7 @@ function Series (props) {
                      paddingBottom: '3em',
                      paddingRight: '2em',
                      paddingLeft: '2em',
-                     borderColor: "rgba(54, 255, 145, 0.25)",
+                     borderColor: "#80208040",
                       borderStyle: "solid",
                       
                       }}>
@@ -58,10 +60,14 @@ function Series (props) {
                                     'left': "-3em",
                                     'fontSize': "0.9em",
                                     "fontWeight": "bold",
+                                    "width": "200%",
                                     fontFamily: "Rockwell"
                                     }}>
-                                        <Link to={"../../../" + props.series_name + "/piece/" + piece}  relative="path">
-                                        {props.series_name}
+                                        <Link to={"../../../../../" + props.series_name + "/piece/" + piece + '/card/0'}  
+                                        relative="path"
+                                         style={{textDecoration: 'none',
+                                            color: 'blue'}}>
+                                        {series_name}
                           
                                             </Link>
            

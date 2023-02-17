@@ -31,8 +31,9 @@ export async function piece_loader({ params }) {
 
     return <li style={{position: "relative",
                        marginBottom: "0.5vh",
+                       fontFamily: 'Oswald',
                        left: "-1vw"}}>
-                           <Link to={"../" + props.filename}  relative="path">
+                           <Link to={"../../../" + props.filename + "/card/0"}  relative="path">
                            <span style={{fontSize: "22px"}}>{props.title}</span>
                           
     </Link>
@@ -100,15 +101,15 @@ function SeriesViewer(props) {
         }}
         
         >
-            <Link to={"../../../../series/none/piece/" + piece_file_name}  relative="path">
+            <Link to={"../../../../../../series/none/piece/" + piece_file_name + "/card/0"}  relative="path">
     <RiCloseCircleFill color="#802080" style={{fontSize: "3em", 
                                position: 'absolute',
                                right: "-20",
                                top: "-20", 
             }} > </RiCloseCircleFill> </Link>
-           <h2 style={{textAlign: 'center'}}>{series_name} </h2> 
+           <h2 style={{textAlign: 'center', fontFamily: 'Rockwell'}}>{series_name.split('_').join(" ")} </h2> 
            <hr></hr>
-           <h3> List of Pieces </h3>
+           <h3 style={{fontFamily: 'Rockwell'}}> List of Pieces </h3>
            <ul>
         {pieces_to_display.map(object => (
           <PieceDisplay key={object.filename}
@@ -127,6 +128,7 @@ function SeriesViewer(props) {
      {
         const data = useLoaderData();
         const piece_file_name = data["params"]['Piece']
+        const card_index = parseInt(data["params"]["Card"])
 
         if (piece_file_name === "none") {
             return 
@@ -146,24 +148,32 @@ function SeriesViewer(props) {
                   zIndex: "1",
                   position: "relative",
             }}>
-                <h2 style={{textAlign: 'center'}}>{piece.title} </h2> 
+                <h2 style={{textAlign: 'center', fontFamily: 'Rockwell'}}>{piece.title} </h2> 
                 <div style={{display: 'grid',
                              position: 'absolute',
                              top: 20,
                              right: -110}}>
-                    <span style={{textAlign: 'center',  width: '7.5em'}}>Contents</span>
+                    <span style={{textAlign: 'center', 
+                                  width: '7.5em',
+                                fontFamily: 'Rockwell'}}>Contents</span>
                     {piece.blocks.map((item, index) => (
 
+                        <Link to={"../" + index}  relative="path" style={{textDecoration: 'none'}}>
                         <div key={index} style={{margin: "2px", 
                                         padding: "2px",
                                         width: '10em', 
-                                        backgroundColor: '#afb3b0',
+                                        
+                                        color: 'black',
+                                        backgroundColor: (index ===
+                                             card_index) ? 'white' : "lightgray",
                                         fontSize: '0.7em',
                                         textAlign: 'center',
+                                        fontFamily: 'Rockwell',
                                         boxShadow: "5px 5px black"}}>
                             {item}
 
                         </div>
+                        </Link>
 
                     ))}
 
@@ -172,12 +182,16 @@ function SeriesViewer(props) {
                 <div style={{display: 'flex', flexDirection: 'row'}}>
            {piece.tags.map((item, index) => (
                  <div key={index} style={{margin: "5px", 
-                                         backgroundColor: "rgba(11, 57, 84, 0.1)",
-                                         padding: "3px",
-                                         borderRadius: "30%"}}> 
+                                         backgroundColor: "#802080D0",
+                                         fontFamily: 'Oswald',
+                                         padding: "5px",
+                                         borderRadius: "10px"}}> 
 
-<Link to={"../../../../series/" + item + "/piece/" + piece.filename}  relative="path">
-                          {item}
+                    <Link to={"../../../../../../series/" + item + "/piece/" + piece.filename + "/card/" + card_index} 
+                          relative="path"
+                          style={{'textDecoration': 'none', 
+                                  'color': 'white'}}>
+                          {item.split('_').join(" ")}
                           
     </Link>
                                          
@@ -187,7 +201,7 @@ function SeriesViewer(props) {
       
     </div>
     <hr></hr>
-    <Link to={"../none"}  relative="path">
+    <Link to={"../../../none/card/0"}  relative="path">
                           
                           
    
@@ -198,7 +212,10 @@ function SeriesViewer(props) {
             }} > </RiCloseCircleFill> </Link>
 
 
-            <BlockTexts blocks_text={piece.blocks_text} blocks = {piece.blocks} />
+            <BlockTexts 
+                        blocks_text={piece.blocks_text} 
+                        blocks = {piece.blocks}
+                        card_index = {card_index} />
                
 
             </div>
@@ -220,7 +237,7 @@ function ActiveViewer() {
         }
 
         if (series_name === "none") {
-            column_template = "60% 1fr"
+            column_template = "45% 50%"
 
         }
 

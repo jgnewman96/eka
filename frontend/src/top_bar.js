@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom";
 
 
 function TopBar() {
@@ -11,9 +12,15 @@ function TopBar() {
                 color: "black",
                 borderColor: "gray",
                 paddingBottom: "10px",
-                textAlign: "center"
+                textAlign: "center",
+               
             }}>
-                Chron
+                 <Link to="/" style={{ textDecoration: "none", color: "black"}}>
+                    Chron
+                                        
+                          
+                </Link>
+                
 
             </div>
         );

@@ -32,7 +32,6 @@ function Canvas (props) {
    metadata = props.metadata
    
    }
-   console.log(metadata)
    
 
    var tags_to_include = []

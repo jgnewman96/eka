@@ -4,6 +4,7 @@ import { json, useLoaderData } from "react-router-dom";
 import Canvas from "./canvas";
 import StatusSelector from "./status_selector";
 import { useLocation } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 
 export async function chron_loader({ params }) {
@@ -47,18 +48,36 @@ export async function chron_loader({ params }) {
   function HiddenCanvas (props) {
 
     var location = useLocation().pathname.split('/')
-    console.log(location)
     if (location.length < 3) {
     return (
         <div>
         <div style = {{ position: 'absolute', 
                         width: "40vw", 
                         height: "70vh",
-                         backgroundColor: 'black',
+                         backgroundColor: '#EBCBC1DB',
+                         boxShadow: "1px 1px 20px 15px grey",
                          top: "10vh",
                          opacity: 1,
                          zIndex: 100,
-                         left: '30vw' }}></div> 
+                         left: '30vw' }}>
+
+        <h2 style={{textAlign: 'center'}}>Welcome to Chron!</h2>
+        Chron is an experimental writing tool built by Judah Newman. 
+
+        <h3>Places to Start!</h3>
+        <div style={{display: 'grid'}}>
+            <span>  
+                <Link to={"/series/top_of_mind/piece/none/card/0"} relative="path">
+                    Top of Mind
+                                        
+                          
+                                            </Link></span>
+
+
+        </div>
+                             
+                             
+    </div> 
 
     <div style={{
         display: "grid",
@@ -90,8 +109,6 @@ function Chron() {
     const [showInProgress, updateShowInProgress] = useState(true)
     const [showAbandoned, updateShowAbandoned] = useState(false)
 
-
-    console.log(showFinished)
 
     function handleShowFinished(e) {
         updateShowFinished(e.target.checked)

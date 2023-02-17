@@ -64,6 +64,7 @@ function CardContainer(props) {
         <div className='CardTitle' style={{  fontSize: "0.7em",
                                             textAlign: "center",
                                              marginTop: "1em", 
+                                             fontFamily: 'Yantramanav'
                                              }}>
             {props.title}
         </div>
@@ -97,7 +98,10 @@ function CardContainer(props) {
          
           //  overflow: "hidden"
         }} >
-            <div style={{textAlign: "center", fontSize: "0.6em", marginBottom: "2%"}}>
+            <div style={{textAlign: "center",
+                         fontSize: "0.9em", 
+                         fontFamily: "Rockwell",
+                         marginBottom: "2%"}}>
                     {props.title}
                     </div>
 
@@ -108,14 +112,16 @@ function CardContainer(props) {
                                                    top: (index > 0) ? "-1%": "0%",
                                                    zIndex: props.blocks.length + index,
                                                     width: "90%",
-                                                    height: (props.blocks.length === 1) ? "3em" : item.length / total_character_length  * 100 + '%' ,
+                                                    height: (props.blocks.length == 1) ? "3em" : item.length / total_character_length  * 100 + '%' ,
                                                     borderTop: "3px solid black",
                                                     borderLeft: "3px solid black",
                                                     borderRight: "3px solid black",
                                                     boxShadow: "0px -3px 3px rgba(50, 50, 50, 0.75)",
-                                                    borderBottom: (index === props.blocks.length - 1) ? "3px solid black": "",
+                                                    borderBottom: (index == props.blocks.length - 1) ? "3px solid black": "",
                                                     backgroundColor: color,
-                                                    opacity: opacity
+                                                    opacity: opacity,
+                                                    fontFamily: 'Yantramanav'
+                                                    
                                                 
                                                   }}>
                 {item}

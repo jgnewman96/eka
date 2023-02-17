@@ -16,7 +16,7 @@ import ActiveViewer, {piece_loader} from "./chron/active_viewer"
       loader: chron_loader,   
           children: [
               {
-                  path: "series/:Series/piece/:Piece",
+                  path: "series/:Series/piece/:Piece/card/:Card",
                   element: <ActiveViewer />,
                   loader: piece_loader
               },
