@@ -42,6 +42,7 @@ function BlockTexts (props) {
     
     const [childPositions, setChildPositions] = useState([]);
     const [scrollPosition, setScrollPosition] = useState(0);
+    const [lastScrollPosition, setLastScrollPosition] = useState(0);
     const [activeBlock, setactiveBlock] = useState(props.card_index);
     
     const containerRef = useRef(null);
@@ -51,22 +52,28 @@ function BlockTexts (props) {
     
 
     useEffect(() => {
-        console.log("SCROLL")
-        console.log(props.card_index)
-        console.log(activeBlock)
 
         if (props.card_index !== activeBlock) {
 
         if (childPositions.length > 0) {
 
-        const newscrollPosition = childPositions[props.card_index]['top'] - 200
+        const newscrollPosition = childPositions[props.card_index]['top']
            
 
         setScrollPosition(newscrollPosition)
        
-        containerRef.current.scroll({left: 0, top: newscrollPosition, behavior: 'smooth'})
+        containerRef.current.scroll({left: 0, top: newscrollPosition - 20, behavior: 'smooth'})
+
+        setTimeout( function() { containerRef.current.scroll({left: 0, top: newscrollPosition}); }, 800);
+
+        
         }}
+        
       }, [props.card_index]);
+
+      useEffect(() => {
+        setLastScrollPosition(scrollPosition);
+      }, [scrollPosition]);
 
 
     
@@ -80,10 +87,6 @@ function BlockTexts (props) {
     
         const container = containerRef.current;
         const childElements = Array.from(container.children);
-        const scroll_to = childPositions[activeBlock]
-        setScrollPosition(scroll_to)
-        container.scrollTo(scroll_to)
-       // console.log(scrollPosition)
     
         const updateChildPositions = () => {
           setChildPositions(
@@ -91,32 +94,57 @@ function BlockTexts (props) {
                 
                 
                 {
-              top: child.offsetTop,
-              middle: child.offsetTop + (child.offsetHeight / 2),
-              height: child.offsetHeight,
+              top: child.offsetTop - 130,
+              bottom: child.offsetTop + child.offsetHeight - 400,
             }))
           );
-          setScrollPosition(container.scrollTop + (container.offsetHeight / 2));
+         
+          setScrollPosition(container.scrollTop);
+         
+          
         };
+
+        
     
         updateChildPositions();
         container.addEventListener("scroll", updateChildPositions);
+
+        console.log(activeBlock)
+
+
+        const newscrollPosition = childElements[activeBlock].offsetTop
+
+        container.scroll({left: 0, top: newscrollPosition - 130, behavior: 'smooth'})
+        setScrollPosition(newscrollPosition)
     
         return () => {
           container.removeEventListener("scroll", updateChildPositions);
         };
       }, []);
 
+      if (scrollPosition !== lastScrollPosition) {
+          const direction = scrollPosition -  lastScrollPosition
+         
 
 
 
       var distances = []
      
       for (let i = 0; i < childPositions.length; i++ ) {
-          const position = childPositions[i]['middle']
+          var position = 0
+          if (direction > 0) {
+          position = childPositions[i]['top']
+          }
+          else {
+              position = childPositions[i]['bottom']
+          }
           distances.push(Math.abs(scrollPosition - position))
+          
       }
-      const newActiveBlock = distances.indexOf(Math.min(...distances))
+      console.log(distances)
+      const newActiveBlock = distances.findIndex(x => x < 100);
+     // console.log(index)
+
       if (newActiveBlock > -1) {
       if (newActiveBlock != activeBlock) {
             location.pop()
@@ -125,6 +153,7 @@ function BlockTexts (props) {
             navigate(location.join('/'));
       }
     }
+}
 
 
    

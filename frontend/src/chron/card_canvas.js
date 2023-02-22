@@ -1,4 +1,5 @@
 import React, { useEffect, createRef } from "react"
+import { Link } from "react-router-dom";
 
 const CardType = {
     Solo: Symbol("Solo"),
@@ -92,7 +93,7 @@ function CardContainer(props) {
            
             height: "100%",
             width: "100%",
-            marginBottom: "1.5em",
+            marginBottom: ".5em",
           
            
          
@@ -101,11 +102,30 @@ function CardContainer(props) {
             <div style={{textAlign: "center",
                          fontSize: "0.9em", 
                          fontFamily: "Rockwell",
-                         marginBottom: "2%"}}>
-                    {props.title}
+                        }}>
+
+<Link to={"../../../../" +  "piece/" + props.filename + '/card/0'}  
+                                        relative="path"
+                                         style={{textDecoration: 'none',
+                                            color: 'blue'}}>
+                                                {props.title}
+                                       
+                          
+                                            </Link>
+                    
                     </div>
 
                     {props.blocks.map((item, index) => (
+
+<Link to={"../../../../" +  "piece/" + props.filename + '/card/' + index}  
+relative="path"
+ style={{textDecoration: 'none',
+    color: 'black'}}>
+       
+
+
+    
+                        
                          <div key={index}style={{  fontSize: "0.8em",
                                                    textAlign: "center",
                                                    position: "relative",
@@ -120,13 +140,15 @@ function CardContainer(props) {
                                                     borderBottom: (index == props.blocks.length - 1) ? "3px solid black": "",
                                                     backgroundColor: color,
                                                     opacity: opacity,
-                                                    fontFamily: 'Yantramanav'
+                                                    fontFamily: 'Yantramanav',
+                                                    marginBottom: (index == props.blocks.length - 1) ? "0em" : "0em"
                                                     
                                                 
                                                   }}>
                 {item}
 
             </div>
+            </Link>
     
             ))}
     </div>)
@@ -141,7 +163,7 @@ function Card (props) {
     
 
         return (
-            <CardContainer title={props.title} blocks={props.blocks} status={props.status} >
+            <CardContainer title={props.title} blocks={props.blocks} status={props.status} filename={props.filename} >
             </CardContainer>
 
 

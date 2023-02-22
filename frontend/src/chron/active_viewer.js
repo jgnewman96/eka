@@ -17,7 +17,7 @@ function convert_unix_to_year_month(unix) {
 
 }
 
-const popOutColor= "#EBCBC190"
+const popOutColor= "#EBCBC1FF"
 
 export async function piece_loader({ params }) {
     return json({ params });
@@ -97,7 +97,7 @@ function SeriesViewer(props) {
              boxShadow: "1px 1px 5px 5px grey",
              position: 'relative',      
              backgroundColor: popOutColor,
-             zIndex: "1"
+             zIndex: "200"
         }}
         
         >
@@ -130,6 +130,7 @@ function SeriesViewer(props) {
         const piece_file_name = data["params"]['Piece']
         const card_index = parseInt(data["params"]["Card"])
 
+
         if (piece_file_name === "none") {
             return 
         }
@@ -145,8 +146,9 @@ function SeriesViewer(props) {
                 width: "100%",
                   boxShadow: "1px 1px 5px 5px grey",
                   backgroundColor: popOutColor,
-                  zIndex: "1",
+                  zIndex: "200",
                   position: "relative",
+                  opacity: 20,
             }}>
                 <h2 style={{textAlign: 'center', fontFamily: 'Rockwell'}}>{piece.title} </h2> 
                 <div style={{display: 'grid',

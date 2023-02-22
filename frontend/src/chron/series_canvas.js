@@ -46,9 +46,9 @@ function Series (props) {
                      gridTemplateColumns: "1fr 1fr 1fr",
                      gridAutoRows: "max-content",
                      columnGap: "3em",
-                     rowGap: "4em",
+                     rowGap: "5em",
                      height: 'auto',
-                     paddingBottom: '3em',
+                     paddingBottom: '6em',
                      paddingRight: '2em',
                      paddingLeft: '2em',
                      borderColor: "#80208040",
@@ -77,7 +77,7 @@ function Series (props) {
             {pieces_to_display.map((item, index) => (
         <div key={index}>
            
-            <Card title = {item.title} blocks = {item.blocks} status = {item.status} />
+            <Card title = {item.title} blocks = {item.blocks} status = {item.status} filename={item.filename} />
                                         
             
 
