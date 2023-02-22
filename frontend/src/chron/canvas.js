@@ -36,7 +36,7 @@ function Canvas (props) {
    
 
    var tags_to_include = []
-   var columnTemplate = "60% 60%"
+   var columnTemplate = "25vw 25vw"
 
   if (series !== "none") {
 
@@ -68,7 +68,7 @@ function Canvas (props) {
 
     if (piece === "none") {
 
-    columnTemplate = "30% 30% 30% 30%"
+    columnTemplate = "30vw 30vw 30vw 30vw"
 
     tags_to_include = Object.keys(metadata["by_tag"])
 
