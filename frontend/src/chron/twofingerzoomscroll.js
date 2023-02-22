@@ -19,51 +19,6 @@ class TwoFingerScrollZoom extends Component {
     this.handleResetClick = this.handleResetClick.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
-
-  calculateMovementFactor(movementFactor) {
-    if (this.state.zoom > 3) {
-        movementFactor = movementFactor * 0.05
-    }
-
-
-    if (this.state.zoom > 2) {
-        movementFactor = movementFactor * 0.5
-    }
-   
-
-    if (this.state.zoom > 1.5) {
-        movementFactor = movementFactor * 1.1
-    }
-
-
-    if (this.state.zoom > 1) {
-        movementFactor = movementFactor * 3
-    }
-
-    else if (this.state.zoom > 0.8) {
-        movementFactor = movementFactor * 4
-    }
-
-    else if (this.state.zoom > 0.6) {
-        movementFactor = movementFactor * 5
-    }
-
-    else if (this.state.zoom > 0.4) {
-        movementFactor = movementFactor * 5.2
-    }
-    else if (this.state.zoom > 0.3) {
-        movementFactor = movementFactor * 5.5
-    }
-
-    else if (this.state.zoom > 0.2) {
-        movementFactor = movementFactor * 5.5
-    }
-
-    else { 
-          movementFactor = movementFactor * 5.5
-        }
-    return movementFactor
-  }
   
 
   handleWheel(event) {
