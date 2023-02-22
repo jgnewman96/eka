@@ -6,6 +6,8 @@ class TwoFingerScrollZoom extends Component {
     super(props);
 
     this.state = {
+      height_unit: 0,
+      width_unit: 0,
       x: 0,
       y: 0,
       zoom: 1,
@@ -62,30 +64,31 @@ class TwoFingerScrollZoom extends Component {
         return
     }
 
+    const zoomDifference = newZoom - 1 
+    var newWidth = 98 - zoomDifference * 100;
+    var newHeight = 90 - zoomDifference * 400;
+
+   
+
+
     
-    var newWidth = this.state.width + deltaY * 100;
-    var newHeight = this.state.height + (deltaY * 400);
+    
 
     newHeight = Math.max(newHeight, 90)
     newWidth = Math.max(newWidth, 98)
 
 
-    const Xmovement = gridWidth  *  deltaY  / 2
-    const Ymovement = gridHeight   *  deltaY  / 0.58
+    const Xmovement = newWidth * this.state.width_unit  *  zoomDifference  / 2
+    const Ymovement = newHeight * this.state.height_unit   *  zoomDifference / 2
+   // console.log(Xmovement, Ymovement)
 
     
-    var newY = this.state.y - Ymovement
-    var newX = this.state.x - Xmovement
+
     
-
-    if ( Math.abs(1 - newZoom) < .2) {
-        newY = 0;
-    }
-
-    if (newZoom > 1.98) {
-       newX = newX - 60
-       newY = newY - 50
-    }
+    var newY =  Ymovement
+    var newX =   Xmovement
+    
+    
     if (newZoom > 2.0) {
         return
      }
@@ -96,7 +99,7 @@ class TwoFingerScrollZoom extends Component {
          zoom: newZoom,
          animating: true,
         height: newHeight,
-         width: newWidth,
+        width: newWidth,
           y: newY,
          x: newX
         
@@ -132,8 +135,13 @@ class TwoFingerScrollZoom extends Component {
     document.addEventListener('keydown', this.handleKeyDown);
     const child = this.container.children[0]
     const gridCoords = child.getBoundingClientRect()
+    const height_unit = gridCoords.height / this.state.height
+    const width_unit = gridCoords.width / this.state.width
+
+
     this.setState({
-        x: gridCoords.x
+        height_unit: height_unit,
+        width_unit: width_unit,
        
        });
      
@@ -146,6 +154,7 @@ class TwoFingerScrollZoom extends Component {
   }
 
   handleResetClick (e) {
+      
     const child = this.container.children[0]
 
     this.setState({
