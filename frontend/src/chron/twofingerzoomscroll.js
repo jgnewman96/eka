@@ -78,15 +78,24 @@ class TwoFingerScrollZoom extends Component {
     newWidth = Math.max(newWidth, 98)
 
 
-    const Xmovement = newWidth * this.state.width_unit  *  zoomDifference  / 2
-    const Ymovement = newHeight * this.state.height_unit   *  zoomDifference / 2
-   // console.log(Xmovement, Ymovement)
+    var newX = newWidth * this.state.width_unit  *  zoomDifference  / 2
+    const newY = newHeight * this.state.height_unit   *  zoomDifference / 2
 
+
+    const left = newWidth * this.state.width_unit  *  zoomDifference  / 2 - newX
+    const center_px = left + (gridWidth / 2)
+    const center = (this.state.width_unit * 50)
+
+    if (center_px < center) {
+        newX = newX - (center_px - center)
+    }
+  
     
 
     
-    var newY =  Ymovement
-    var newX =   Xmovement
+
+    
+   
     
     
     if (newZoom > 2.0) {
