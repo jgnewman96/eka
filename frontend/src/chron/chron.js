@@ -53,28 +53,57 @@ export async function chron_loader({ params }) {
         <div>
         <div style = {{ position: 'absolute', 
                         width: "40vw", 
-                        height: "70vh",
-                         backgroundColor: '#EBCBC1DB',
+                        height: "50vh",
+                         backgroundColor: '#EBCBC1FB',
                          boxShadow: "1px 1px 20px 15px grey",
                          top: "10vh",
                          opacity: 1,
                          zIndex: 100,
-                         left: '30vw' }}>
+                         left: '30vw', 
+                         fontFamily: "Yantramanav" }}>
+        <div style={{margin: "5px"}}>
 
-        <h2 style={{textAlign: 'center'}}>Welcome to Chron!</h2>
+        <h2 style={{textAlign: 'center', fontFamily: "Rockwell"}}>Welcome to Chron!</h2>
         Chron is an experimental writing tool built by Judah Newman. 
+        Chron is an interface to help me regularly create written work that I am proud of. 
+        Chron is an experiment in building software for a user base of 1! It is fully optimized for my creative process.
 
-        <h3>Places to Start!</h3>
-        <div style={{display: 'grid'}}>
-            <span>  
-                <Link to={"/series/top_of_mind/piece/none/card/0"} relative="path">
-                    Top of Mind
-                                        
-                          
-                                            </Link></span>
+        <br></br>
+        <br></br>
 
-
+        Reach out to me at judah.newman@gmail.com with feedback or any other thoughts you have about Chron!
         </div>
+
+        <h3 style={{textAlign: 'center', fontFamily: "Rockwell"}}>Some Places to Start!</h3>
+        <ul>
+        <li style={{margin: "10px"}}>
+                <Link to={"/series/none/piece/chron_-_product_spec/card/0"} relative="path">
+                    The original Chron product specification
+                </Link>
+                </li>
+            <li style={{margin: "10px"}}>
+                <Link to={"/series/whoami/piece/none/card/0"} relative="path">
+                    Reflection about my identity
+                </Link>
+                </li> 
+                <li style={{margin: "10px"}}>
+                <Link to={"/series/highlights/piece/none/card/0"} relative="path">
+                    Pieces that I am most proud of
+                </Link>
+                </li>  
+            <li style={{margin: "10px"}}>
+                <Link to={"/series/top_of_mind/piece/none/card/0"} relative="path">
+                    Topics that I am actively thinking about
+                </Link>
+                </li> 
+                <li style={{margin: "10px"}}>
+                <Link to={"/series/none/piece/none/card/0"} relative="path">
+                    Explore the entire canvas of my writing
+                </Link>
+                </li> 
+
+
+            </ul>
                              
                              
     </div> 
