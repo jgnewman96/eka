@@ -2,10 +2,31 @@ import ReactMarkdown from 'react-markdown'
 import {useRef, useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+const LinkRenderer = ({ href, children, title }) => {
+    const isInternal = href.startsWith('/')
+    const link_str = '../../../../piece' + href + '/card/0' 
+    
+
+    if (isInternal) {
+        return <Link to={link_str}  relative='path'> {children} </Link>
+    }
+  
+    return (
+      <a
+        href={href}
+      >
+        {children}
+      </a>
+    );
+  };
 
 
 
 function Block (props) {
+
+   
 
     var backgroundColor = "transparent"
     var opacity = 0.3
@@ -17,17 +38,19 @@ function Block (props) {
 
     return (
         <div style={{margin: "10px", 
-                width: '90%', 
+        position: 'relative',
+                width: '45vw', 
                 fontSize: '0.9em',
                 backgroundColor: backgroundColor,
                 paddingRight: "2%",
                 paddingLeft: "2%",
                 opacity: opacity,
+                
                
                }}>
                     <h2 style={{fontFamily: 'Rockwell'}}> {props.title} </h2>
-                    <span style={{fontFamily: "Yantramanav"}}>
-                    <ReactMarkdown children={props.text}/>
+                    <span style={{fontFamily: "Yantramanav", }}>
+                    <ReactMarkdown components={{ a: LinkRenderer }} children={props.text}/>
                     </span>
     
     
@@ -164,10 +187,11 @@ function BlockTexts (props) {
     return (
       
         <div style={{display: 'grid',
-                 height: '87%',
-                 width: '100%',
+                 height: '86.5%',
+                 width: '50vw',
                  overflowY: "scroll",
-                 overflowX: "visible"}}
+                 overflowX: "hidden",
+              }}
                  ref={containerRef}
     
     >

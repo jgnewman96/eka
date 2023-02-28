@@ -97,7 +97,7 @@ function SeriesViewer(props) {
              boxShadow: "1px 1px 5px 5px grey",
              position: 'relative',      
              backgroundColor: popOutColor,
-             zIndex: "200"
+             zIndex: "200",
         }}
         
         >
@@ -109,6 +109,7 @@ function SeriesViewer(props) {
             }} > </RiCloseCircleFill> </Link>
            <h2 style={{textAlign: 'center', fontFamily: 'Rockwell'}}>{series_name.split('_').join(" ")} </h2> 
            <hr></hr>
+        <div style={{overflow: 'scroll', height: "92%"}}>
            <h3 style={{fontFamily: 'Rockwell'}}> List of Pieces </h3>
            <ul>
         {pieces_to_display.map(object => (
@@ -119,6 +120,7 @@ function SeriesViewer(props) {
                         modified = {object.modified} />
         ))}
       </ul>
+      </div>
       
             </div>
     );

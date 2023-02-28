@@ -62,6 +62,22 @@ def get_status_from_tags(tags):
     else:
         return "In Progress"
 
+def find_links_to_other_pieces(text):
+    matches = re.findall(r"\[\[(.*?)\]\]", text)
+    return matches
+
+def replace_links_to_other_pieces(text):
+
+    def create_link_string(match):
+        title = match.group(1)
+        filename = make_filename_from_title(title)
+        return f"[{title}](/{filename})"
+
+    new_text_str = re.sub(r"\[\[(.*?)\]\]", create_link_string, text)
+
+
+    return new_text_str
+
 
 
 
@@ -113,6 +129,10 @@ def main(arguments: Optional[Sequence[Text]]) -> Optional[int]:
 
     notes = notes[notes['tags'].apply(lambda x: len(x) > 0)]
     notes = notes.reset_index(False)
+
+
+    notes['links_to'] = notes['text'].apply(find_links_to_other_pieces)
+    notes['text'] = notes['text'].apply(replace_links_to_other_pieces)
 
 
     notes['blocks'] = notes['text'].apply(get_block_titles_from_text)
