@@ -55,7 +55,17 @@ function CardContainer(props) {
 
     if (props.blocks.length < 1) { 
 
-    return (<div className='Card' style={{border: "3px solid black",
+    return (
+        <div>
+        <Link to={"../../../../" +  "piece/" + props.filename + '/card/0'}  
+                                        relative="path"
+                                         style={{textDecoration: 'none',
+                                            color: 'black'}}>
+                                               
+                                       
+                          
+                                            
+    <div className='Card' style={{border: "3px solid black",
                                             height: "80%",
                                             width: "100%",
                                             boxShadow: "2px 2px", 
@@ -69,7 +79,10 @@ function CardContainer(props) {
                                              }}>
             {props.title}
         </div>
-    </div>)
+    </div>
+    </Link>
+    </div>
+    )
     }
     else {
         var total_character_length = 0
@@ -107,7 +120,7 @@ function CardContainer(props) {
 <Link to={"../../../../" +  "piece/" + props.filename + '/card/0'}  
                                         relative="path"
                                          style={{textDecoration: 'none',
-                                            color: 'blue'}}>
+                                            color: 'black'}}>
                                                 {props.title}
                                        
                           

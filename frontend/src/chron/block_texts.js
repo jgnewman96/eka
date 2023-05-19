@@ -26,6 +26,15 @@ const LinkRenderer = ({ href, children, title }) => {
 
 function Block (props) {
 
+    var location = useLocation().pathname.split('/')
+  
+
+    var width = "27vw"
+    if (location[2] == 'none') {
+        width = '45vw'
+    }
+
+
    
 
     var backgroundColor = "transparent"
@@ -39,7 +48,7 @@ function Block (props) {
     return (
         <div style={{margin: "10px", 
         position: 'relative',
-                width: '45vw', 
+                width: width, 
                 fontSize: '0.9em',
                 backgroundColor: backgroundColor,
                 paddingRight: "2%",
@@ -71,6 +80,12 @@ function BlockTexts (props) {
     const containerRef = useRef(null);
     const navigate = useNavigate();
     var location = useLocation().pathname.split('/')
+    console.log(location[2])
+
+    var width = "29vw"
+    if (location[2] == 'none') {
+        width = '50vw'
+    }
 
     
 
@@ -110,6 +125,11 @@ function BlockTexts (props) {
     
         const container = containerRef.current;
         const childElements = Array.from(container.children);
+        
+        if (childElements.length == 0) 
+        {
+            return
+        }
     
         const updateChildPositions = () => {
           setChildPositions(
@@ -132,7 +152,7 @@ function BlockTexts (props) {
         updateChildPositions();
         container.addEventListener("scroll", updateChildPositions);
 
-        console.log(activeBlock)
+        
 
 
         const newscrollPosition = childElements[activeBlock].offsetTop
@@ -164,7 +184,6 @@ function BlockTexts (props) {
           distances.push(Math.abs(scrollPosition - position))
           
       }
-      console.log(distances)
       const newActiveBlock = distances.findIndex(x => x < 100);
      // console.log(index)
 
@@ -188,7 +207,7 @@ function BlockTexts (props) {
       
         <div style={{display: 'grid',
                  height: '86.5%',
-                 width: '50vw',
+                 width: width,
                  overflowY: "scroll",
                  overflowX: "hidden",
               }}

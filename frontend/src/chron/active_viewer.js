@@ -1,10 +1,11 @@
-import React from "react"
+import React, {useRef, useEffect, useState} from "react"
 import { json, useLoaderData } from "react-router-dom";
 import Canvas from "./canvas"
 import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { RiCloseCircleFill } from "react-icons/ri";
 import BlockTexts from "./block_texts";
+import ReactMarkdown from 'react-markdown'
 
 
 
@@ -19,31 +20,65 @@ function convert_unix_to_year_month(unix) {
 
 const popOutColor= "#EBCBC1FF"
 
+
+
 export async function piece_loader({ params }) {
+
     return json({ params });
   }
 
   function PieceDisplay(props) {
+    const containerRef = useRef(null);
+    const [width, SetWidth] = useState(0)
 
     const created = convert_unix_to_year_month(props.created)
     const modified = convert_unix_to_year_month(props.modified)
+    
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        const container = containerRef.current;
+
+        function updateWidth () {
+        SetWidth(container.clientWidth)
+        }
+        updateWidth()
+
+    window.addEventListener("resize", updateWidth)
+  
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []) 
 
 
-    return <li style={{position: "relative",
-                       marginBottom: "0.5vh",
+
+
+    return <div style={{position: "relative",
+                       marginLeft: "2%",
+                       marginRight: "2%",
+                       marginBottom: "1%",
                        fontFamily: 'Oswald',
-                       left: "-1vw"}}>
+                      
+                       borderColor: 'grey',
+                       borderRadius: '5px',
+                       borderStyle: 'groove',
+                       boxShadow: '1px 2px 1px grey'
+                       
+                       }}
+                       ref={containerRef}>
                            <Link to={"../../../" + props.filename + "/card/0"}  relative="path">
                            <span style={{fontSize: "22px"}}>{props.title}</span>
                           
     </Link>
                         <br style={{height: "40em"}}></br>
                         
-                       
+                    
                        Created: {created.year} {created.month}
-                       <br></br>
+                       {width > 270 ? "  |||   " : <br></br>}
+                       
+  
+                       
                        Last Touched: {modified.year} {modified.month}
-                       </li>;
+                       </div>;
   }
   
 
@@ -52,11 +87,27 @@ export async function piece_loader({ params }) {
 function SeriesViewer(props) {
     const data = useLoaderData();
 
+    const [series_text, setSeriesText] = useState("")
+
     const series_name = data["params"]['Series']
+
+
     const piece_file_name = data["params"]['Piece']
     if (series_name === "none") {
         return 
     }
+
+
+    fetch('/series_info.json')
+    .then((r) => r.json())
+    .then(json  => {
+
+       const series_text_info = json[series_name]
+       setSeriesText(series_text_info)
+    
+    })  
+
+    
 
     const pieces = props['metadata']['by_tag'][series_name]
 
@@ -109,9 +160,14 @@ function SeriesViewer(props) {
             }} > </RiCloseCircleFill> </Link>
            <h2 style={{textAlign: 'center', fontFamily: 'Rockwell'}}>{series_name.split('_').join(" ")} </h2> 
            <hr></hr>
-        <div style={{overflow: 'scroll', height: "92%"}}>
+        <div style={{overflow: 'scroll', height: "90%"}}>
+
+        <span style={{fontFamily: "Yantramanav", }}>
+        <ReactMarkdown children={series_text}/>
+        </span>
+
            <h3 style={{fontFamily: 'Rockwell'}}> List of Pieces </h3>
-           <ul>
+           <div style={{'display': 'grid'}}>
         {pieces_to_display.map(object => (
           <PieceDisplay key={object.filename}
                         filename={object.filename}
@@ -119,7 +175,7 @@ function SeriesViewer(props) {
                         created = {object.created} 
                         modified = {object.modified} />
         ))}
-      </ul>
+      </div>
       </div>
       
             </div>

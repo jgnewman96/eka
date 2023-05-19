@@ -109,6 +109,7 @@ def main(arguments: Optional[Sequence[Text]]) -> Optional[int]:
     colnames=['created', 'modified', 'trashed', 'title', 'text'] 
     notes = pd.DataFrame(rows, columns = colnames)
     notes = notes[notes['trashed'] == False]
+    notes = notes[notes['title'] != 'INBOX']
 
 
     tags_to_remove = ['literature',
@@ -117,14 +118,24 @@ def main(arguments: Optional[Sequence[Text]]) -> Optional[int]:
               'abandoned', 
               'workouts',
               "",
-              'applications'
+              'applications',
+              'series'
               ]
+
+
 
 
     notes['created'] = notes['created'].apply(convert_column_to_datetime)
     notes['modified'] = notes['modified'].apply(convert_column_to_datetime)
     notes['tags'] = notes['text'].apply(get_tags)
     notes['status'] = notes['tags'].apply(get_status_from_tags)
+
+    series_info = notes[notes['tags'].apply(lambda x: 'series' in x)].copy()
+    series_info['text'] = series_info['text'].apply(lambda x: x.split('****')[-1])
+    series_info = series_info.set_index('title')
+    series_info['text'].to_json("../frontend/public/series_info.json")  
+
+
     notes['tags'] = notes['tags'].apply(lambda x: [t for t in x if t not in tags_to_remove])
 
     notes = notes[notes['tags'].apply(lambda x: len(x) > 0)]

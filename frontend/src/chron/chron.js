@@ -83,7 +83,7 @@ export async function chron_loader({ params }) {
                 </li>
             <li style={{margin: "10px"}}>
                 <Link to={"/series/whoami/piece/none/card/0"} relative="path">
-                    Reflection about my identity
+                    Reflections about my identity
                 </Link>
                 </li> 
                 <li style={{margin: "10px"}}>
@@ -94,6 +94,11 @@ export async function chron_loader({ params }) {
             <li style={{margin: "10px"}}>
                 <Link to={"/series/top_of_mind/piece/none/card/0"} relative="path">
                     Topics that I am actively thinking about
+                </Link>
+                </li> 
+                <li style={{margin: "10px"}}>
+                <Link to={"/series/sparks/piece/none/card/0"} relative="path">
+                    Small ideas which feel compelling but have not been developed yet
                 </Link>
                 </li> 
                 <li style={{margin: "10px"}}>
