@@ -113,13 +113,14 @@ def main(arguments: Optional[Sequence[Text]]) -> Optional[int]:
 
 
     tags_to_remove = ['literature',
-               'correspondence',
+               'aacorrespondence',
               'finished', 
               'abandoned', 
-              'workouts',
+              'aaworkouts',
               "",
               'applications',
-              'series'
+              'series',
+              'visionary_fiction'
               ]
 
 
